@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人名片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+            font-weight: bold;
+        }
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+        .position {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        .divider {
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0 auto 25px;
+            border-radius: 2px;
+        }
+        .info-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .info-icon {
+            font-size: 20px;
+            margin-right: 12px;
+            width: 30px;
+            text-align: center;
+        }
+        .info-text {
+            color: #555;
+            font-size: 15px;
+            word-break: break-all;
+        }
+        .info-label {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 2px;
+        }
+        .info-value {
+            color: #333;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        .footer {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #999;
+            font-size: 12px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            margin-top: 15px;
+            font-weight: 500;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        .bio-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+        }
+        .bio-label {
+            color: #999;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .bio-text {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="avatar" id="avatar">?</div>
+        
+        <h1 id="name">加载中...</h1>
+        <p class="position" id="position"></p>
+        
+        <div class="divider"></div>
+        
+        <div id="company-section" class="info-item" style="display: none;">
+            <span class="info-icon">🏢</span>
+            <div>
+                <div class="info-label">公司/学校</div>
+                <div class="info-value" id="company"></div>
+            </div>
+        </div>
+        
+        <div id="phone-section" class="info-item" style="display: none;">
+            <span class="info-icon">📞</span>
+            <div>
+                <div class="info-label">电话</div>
+                <div class="info-value" id="phone"></div>
+            </div>
+        </div>
+        
+        <div id="email-section" class="info-item" style="display: none;">
+            <span class="info-icon">📧</span>
+            <div>
+                <div class="info-label">邮箱</div>
+                <div class="info-value" id="email"></div>
+            </div>
+        </div>
+        
+        <div id="bio-section" class="bio-section" style="display: none;">
+            <div class="bio-label">个人简介</div>
+            <div class="bio-text" id="bio"></div>
+        </div>
+        
+        <div class="footer">
+            来自：个人数字名片生成器
+        </div>
+    </div>
+
+    <script>
+        // 从URL参数获取名片信息
+        const params = new URLSearchParams(window.location.search);
+        
+        const name = params.get('name') || '张三';
+        const position = params.get('position') || '';
+        const company = params.get('company') || '';
+        const phone = params.get('phone') || '';
+        const email = params.get('email') || '';
+        const bio = params.get('bio') || '';
+        
+        // 设置页面内容
+        document.getElementById('name').textContent = name;
+        document.getElementById('avatar').textContent = name.charAt(0).toUpperCase();
+        
+        if (position) {
+            document.getElementById('position').textContent = position;
+        } else {
+            document.getElementById('position').style.display = 'none';
+        }
+        
+        if (company) {
+            document.getElementById('company').textContent = company;
+            document.getElementById('company-section').style.display = 'flex';
+        }
+        
+        if (phone) {
+            document.getElementById('phone').textContent = phone;
+            document.getElementById('phone-section').style.display = 'flex';
+        }
+        
+        if (email) {
+            document.getElementById('email').textContent = email;
+            document.getElementById('email-section').style.display = 'flex';
+        }
+        
+        if (bio) {
+            document.getElementById('bio').textContent = bio;
+            document.getElementById('bio-section').style.display = 'block';
+        }
+        
+        // 设置页面标题
+        document.title = name + ' - 个人名片';
+    </script>
+</body>
+</html>
